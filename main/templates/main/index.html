@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>To-do List</title>
+    <link rel="stylesheet" href="{% static 'materialize.min.css' %}">
+    <link rel="stylesheet" href="{% static 'icon.css' %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+
+<body>
+    <div class="container main">
+        <div class="card large">
+            <div class="card-content">
+                <span class="card-title">Todo <br>{{ today }}</span>
+                <form action="{% url 'main:add' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-field col s12 l6">
+                        {{ form.text }}
+                        <label for="add_todo">Enter todo</label>
+                    </div>
+
+                    <button class="btn waves-effect waves-light" type="submit" name="action">add
+                        <i class="material-icons right">send</i>
+                    </button>
+                </form>
+
+                <form action="" class="todo">
+                    <ul class="collection">
+                        {% for item in todo_list  %}
+                        <li class="collection-item">
+                            <label>
+                                {% if item.complete %}
+                                <input type="checkbox" checked="checked" />
+                                {% else %}
+                                <input type="checkbox" />
+                                {% endif %}
+                                <span>{{ item.text }}</span>
+                            </label>
+                            <a href="{% url 'main:delete' item.pk %}" class="secondary-content tooltipped" data-tooltip="Delete"><i class="material-icons">clear</i></a>
+                        </li>
+
+                        {% endfor %}
+
+                    </ul>
+                </form>
+            </div>
+
+            <a href="{% url 'main:delete_all' %}" data-tooltip='Delete All' class="btn-floating btn-large tooltipped red halfway-fab"><i class="material-icons">delete</i></a>
+
+        </div>
+        <p class="center">
+            Coded with <i class="material-icons">favorite</i> by oluwakayode
+        </p>
+
+    </div>
+
+
+    <script src="{% static 'jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'materialize.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.tooltipped').tooltip();
+        });
+    </script>
+</body>
+
+</html>
